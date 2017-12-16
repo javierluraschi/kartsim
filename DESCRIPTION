@@ -1,0 +1,27 @@
+Package: hexkart
+Type: Package
+Title: hexkart: Kart simulation for model training
+Version: 0.1.0
+Authors@R: c(
+    person("Javier", "Luraschi", email = "javier@rstudio.com", role = c("aut", "cre")),
+    person(family = "three.js authors", role = c("aut")),
+    person("Rick", "Bruns", email = "rick@nintendomaps.com", role = c("aut")),
+    person(family = "khinsider.com", role = c("aut"))
+    )
+Maintainer: Javier Luraschi <javier@rstudio.com>
+Description: Provides tools to render and capture kart training data using
+  'HTML'  widgets  and 'Shiny' applications. It can be used to: Collect kart
+  playing styles, create test cases for image classification and render trained
+  models over an interactive kart simulation.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends:
+  R (>= 3.1.2)
+Imports:
+  htmlwidgets,
+  shiny,
+  miniUI
+Suggests:
+  testthat
+RoxygenNote: 6.0.1

@@ -1,0 +1,122 @@
+HTMLWidgets.widget({
+  name: 'hexdriver',
+  type: 'output',
+  factory: function(el, width, height) {
+    var saveFile = function (data, name) {
+        var link = document.createElement('a');
+        if (typeof link.download === 'string') {
+            document.body.appendChild(link); //Firefox requires the link to be in the body
+            link.download = name;
+            link.href = data;
+            link.click();
+            document.body.removeChild(link); //remove the link when done
+        } else {
+            location.replace(uri);
+        }
+    };
+    
+    var saveRender = function(renderer) {
+        var imgData, imgNode;
+        try {
+            var mime = "image/png";
+            var data = renderer.domElement.toDataURL(mime);
+            saveFile(data.replace(mime, "image/octet-stream"), "test.jpg");
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+    };
+    
+    var renderer = new THREE.WebGLRenderer({
+      preserveDrawingBuffer: true
+    });
+    
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    el.appendChild(renderer.domElement);
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xDDEEFF);
+    
+    var light = new THREE.AmbientLight(0xFFFFFF);
+    scene.add(light);
+
+    var camera = new THREE.PerspectiveCamera(70, width / height, 1, 10000);
+    camera.position.y = 6;
+    camera.position.x = -50;
+    camera.position.z = 10;
+    camera.rotation.y = -Math.PI / 2;
+    scene.add(camera);
+    
+    var circuits = new Circuits();
+
+    var audio = new Audio(circuits.getAudio()); 
+      audio.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+    }, false);
+    audio.play();
+    
+    var image = new Image();
+    image.src = circuits.getCircuit();
+    
+    var texture = new THREE.Texture();
+    texture.image = image;
+    image.onload = function() {
+      texture.needsUpdate = true;
+    };
+    
+    texture.repeat.set(3, 3);
+    texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
+    
+    var floor = new THREE.Mesh(
+      new THREE.BoxGeometry(1000, 1, 1000),
+      new THREE.MeshLambertMaterial( { color: 0xFFFFFF, map: texture } )
+    );
+    floor.position.x = 0;
+    floor.position.y = 0;
+    floor.position.z = 0;
+    scene.add(floor);
+    
+    var left = false;
+    var right = false;
+    setInterval(function() {
+      camera.translateZ(-2);
+      if (left) camera.rotation.y -= -0.05 * Math.PI / 2;
+      if (right) camera.rotation.y -= 0.05 * Math.PI / 2;
+    }, 100);
+    
+    document.onkeydown = function (e) {
+      left = e.keyCode == 37;
+      right = e.keyCode == 39;
+      forward = e.keyCode == 38;
+    };
+    
+    document.onkeyup = function (e) {
+      left = right = false;
+    };
+    
+    var saveOne = 0;
+    var animate = function() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+      
+      saveOne ++;
+      if (saveOne == 100) {
+        saveRender(renderer);
+      }
+    };
+
+    animate();
+      
+    return {
+      renderValue: function(x) {
+      },
+      resize: function(width, height) {
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+    };
+  }
+});

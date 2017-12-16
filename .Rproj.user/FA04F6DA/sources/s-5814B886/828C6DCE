@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1513360617412.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "828C6DCE",
+    "lastKnownWriteTime" : 1513383141,
+    "last_content_update" : 1513383141418,
+    "path" : "~/RStudio/hexkart/R/capture.R",
+    "project_path" : "R/capture.R",
+    "properties" : {
+        "cursorPosition" : "53,25",
+        "scrollLine" : "46",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

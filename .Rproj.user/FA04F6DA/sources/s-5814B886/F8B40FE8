@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1513377677556.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F8B40FE8",
+    "lastKnownWriteTime" : 1513381419,
+    "last_content_update" : 1513381419548,
+    "path" : "~/RStudio/hexkart/inst/htmlwidgets/hexkart.js",
+    "project_path" : "inst/htmlwidgets/hexkart.js",
+    "properties" : {
+        "cursorPosition" : "8,54",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "js"
+}
