@@ -23,5 +23,10 @@ Imports:
   shiny,
   miniUI
 Suggests:
-  testthat
+  keras,
+  tensorflow,
+  testthat,
+  tfdeploy,
+Remotes:
+  rstudio/tfdeploy
 RoxygenNote: 6.0.1

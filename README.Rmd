@@ -29,7 +29,7 @@ This will create a snapshot under `capture/` with labels: `left-###.png`,
 
 Once the session is captured, we can train a TensorFlow model by using:
 
-```{r}
+```{r eval=FALSE}
 tfruns::training_run("models/tensorflow.R")
 ```
 
@@ -37,4 +37,10 @@ or in `cloudml` runnning:
 
 ```{r eval=FALSE}
 cloudml::cloudml_train("models/tensorflow.R")
+```
+
+use `tfdeploy` to validate that predictions over the trained model work by running:
+
+```{r}
+tfdeploy::predict_savedmodel(array(0, c(32,32,3)))
 ```
