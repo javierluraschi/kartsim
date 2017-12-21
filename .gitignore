@@ -1,1 +1,7 @@
 capture
+.Rproj.user
+.Rhistory
+.RData
+internal/
+**/.DS_Store
+runs/
