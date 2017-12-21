@@ -1,6 +1,7 @@
 library(keras)
 library(tfruns)
 
+backend()$set_learning_phase(TRUE)
 model <- keras_model_sequential()
 
 model %>%
