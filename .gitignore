@@ -5,3 +5,4 @@ capture
 internal/
 **/.DS_Store
 runs/
+savedmodel/

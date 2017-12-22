@@ -44,3 +44,19 @@ use `tfdeploy` to validate that predictions over the trained model work by runni
 ```{r}
 tfdeploy::predict_savedmodel(array(0, c(32,32,3)))
 ```
+
+Notice that `predict_savedmodel()` initializes a tensorflow session for each
+prediction, which takes too long:
+
+```{r}
+system.time(tfdeploy::predict_savedmodel(array(0, c(32,32,3))))
+```
+
+Instead, we can preload the model and predict over a `graph` object as follows:
+
+```{r}
+sess <- tensorflow::tf$Session()
+graph <- tfdeploy::load_savedmodel(sess)
+
+system.time(tfdeploy::predict_savedmodel(array(0, c(32,32,3)), graph, type = "graph", sess = sess))
+```
