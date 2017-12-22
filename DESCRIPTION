@@ -5,8 +5,10 @@ Version: 0.1.0
 Authors@R: c(
     person("Javier", "Luraschi", email = "javier@rstudio.com", role = c("aut", "cre")),
     person(family = "three.js authors", role = c("aut")),
-    person("Rick", "Bruns", email = "rick@nintendomaps.com", role = c("aut")),
-    person(family = "khinsider.com", role = c("aut"))
+    person("Rick", "Bruns", email = "rick@nintendomaps.com", role = c("aut"),
+    comment = "Circuit Texture"),
+    person(family = "khinsider.com", role = c("aut"),
+    comment = "Circuit Audio")
     )
 Maintainer: Javier Luraschi <javier@rstudio.com>
 Description: Provides tools to render and capture kart training data using
@@ -23,12 +25,14 @@ Imports:
   shiny,
   miniUI
 Suggests:
+  cloudml,
   keras,
   png,
   tensorflow,
   testthat,
-  tfdeploy,
+  tfdeploy
 Remotes:
+  rstudio/cloudml,
   rstudio/keras,
   rstudio/tensorflow,
   rstudio/tfdeploy
