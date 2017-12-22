@@ -103,6 +103,13 @@ function KartRenderer(el, width, height) {
       direction = "forward";
     };
     
+    if (typeof("Shiny") !== "undefined") {
+      Shiny.addCustomMessageHandler("hexkart_control", function(data) {
+          direction = data.direction;
+        }
+      );
+    }
+    
     var animate = function() {
       requestAnimationFrame(animate);
       
@@ -111,7 +118,7 @@ function KartRenderer(el, width, height) {
       
       if (typeof("Shiny") !== "undefined") {
         var data = captureRender.domElement.toDataURL("image/png");
-        Shiny.onInputChange("hexkart", {
+        Shiny.onInputChange("hexkart_capture", {
           data: data,
           direction: direction
         });

@@ -20,8 +20,8 @@ kart simulation.
 Authors:
 \itemize{
   \item  three.js authors
-  \item Rick Bruns \email{rick@nintendomaps.com}
-  \item  khinsider.com
+  \item Rick Bruns \email{rick@nintendomaps.com} (Circuit Texture)
+  \item  khinsider.com (Circuit Audio)
 }
 
 }

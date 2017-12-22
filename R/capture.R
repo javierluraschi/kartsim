@@ -20,48 +20,17 @@ hexkart_capture <- function(target_path = "capture", width = 80, height = 40) {
   if (!dir.exists(target_path))
     dir.create(target_path, recursive = TRUE)
   
-  ui <- miniPage(
-    gadgetTitleBar("HexKart"),
-    miniContentPanel(
-      hexkart_shiny_output("hexkart"),
-      span(
-        textOutput("label"),
-        style = "position: absolute; top: 5px; left: 10px; z-index: 100"
+  counter <- 1
+  hexkart_control(direction = function(image, direction) {
+    writeBin(
+      image,
+      file.path(
+        target_path,
+        sprintf("%05d-%s.png", counter, direction)
       )
     )
-  )
-  
-  server <- function(input, output, session) {
-    counter <- reactiveValues(value = 1)
     
-    output$hexkart <- hexkart_shiny_render(
-      hexkart_play(width, height)
-    )
-    
-    output$label <- renderText({ 
-      input$hexkart$direction
-    })
-    
-    observeEvent(input$hexkart, {
-      data <- sub("data:image/png;base64,", "", input$hexkart$data)
-      base64 <- sub("data:image/png;base64,", "", data)
-      raw <- base64enc::base64decode(base64)
-      
-      writeBin(
-        raw,
-        file.path(
-          target_path,
-          sprintf("%s-%05d.png", input$hexkart$direction, counter$value)
-        )
-      )
-      
-      counter$value <- counter$value + 1 
-    })
-    
-    observeEvent(input$done, {
-      stopApp()
-    })
-  }
-  
-  runGadget(ui, server)
+    counter <<- counter + 1
+    NULL
+  }, width = width, height = height)
 }
