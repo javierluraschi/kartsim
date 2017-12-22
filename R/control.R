@@ -2,9 +2,9 @@
 #' 
 #' Creates an ShinyGadget to control kart in simulation.
 #' 
-#' @param direction A function \code{function(image, direction) {}} that provides
-#'   control for this kart as a string with valid values: \code{"left"}, 
-#'   \code{"forward"} or \code{"right"}.
+#' @param direction A function \code{function(image, direction) {}} that returns
+#'  a direction as string with valid values: \code{"left"},  \code{"forward"} or 
+#'  \code{"right"} and which can make use of a raw png \code{image}.
 #' @param width Width of captured image.
 #' @param height Height of captured image.
 #' 
@@ -18,7 +18,7 @@
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_control <- function(direction, width = 80, height = 40) {
+hexkart_control <- function(direction, width = 32, height = 32) {
   if (!is.function(direction))
     stop(
       "The 'direction' parameter must be a 'function(image, direction) {}'",

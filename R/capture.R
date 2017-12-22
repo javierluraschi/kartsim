@@ -16,7 +16,7 @@
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_capture <- function(target_path = "capture", width = 80, height = 40) {
+hexkart_capture <- function(target_path = "capture", width = 32, height = 32) {
   if (!dir.exists(target_path))
     dir.create(target_path, recursive = TRUE)
   

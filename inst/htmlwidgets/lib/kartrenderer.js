@@ -23,15 +23,8 @@ function KartRenderer(el, width, height) {
       preserveDrawingBuffer: true
     });
     
-    captureRender.setPixelRatio(window.devicePixelRatio);
+    captureRender.setPixelRatio(1);
     captureRender.setSize(captureWidth, captureHeight);
-    /*var captureElement = captureRender.domElement;
-    captureElement.style.position = "absolute";
-    captureElement.style.bottom = "10px";
-    captureElement.style.right = "10px";
-    captureElement.style.width = "200px";
-    captureElement.style.height = "100px";
-    el.appendChild(captureElement);*/
     
     var scene = new THREE.Scene();
     scene.background = new THREE.Color(0xDDEEFF);
