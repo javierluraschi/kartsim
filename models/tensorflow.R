@@ -51,18 +51,29 @@ model %>% compile(
 )
 
 library(png)
-classes <- c("left", "right", "forward")
+classes <- c("left", "forward", "right")
 
 batch_size <- 10000
 
+labels_path <- tempfile()
+dir.create(labels_path)
+for (path in dir("capture", full.names = T)) {
+  for (d in c("left", "forward", "right")) {
+    if (grepl(d, path)) {
+      if (!file.exists(file.path(labels_path, d))) dir.create(file.path(labels_path, d))
+      file.copy(path, file.path(labels_path, d, basename(path)))
+    }
+  }
+}
+
 model %>% fit_generator(
   flow_images_from_directory(
-    "capture/test",
+    labels_path,
     classes = classes,
     batch_size = batch_size,
     target_size = c(32, 32)),
   steps_per_epoch = as.integer(50000 / batch_size), 
-  epochs = 2
+  epochs = 200
 )
 
 model %>% export_savedmodel("savedmodel")
