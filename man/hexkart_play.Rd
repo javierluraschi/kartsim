@@ -4,12 +4,14 @@
 \alias{hexkart_play}
 \title{Play Simulation}
 \usage{
-hexkart_play(width = NULL, height = NULL)
+hexkart_play(width = NULL, height = NULL, circuit = 1)
 }
 \arguments{
 \item{width}{While capturing, width of capture image.}
 
 \item{height}{While capturing, height of capture image.}
+
+\item{circuit}{The circuit index, valid values: 1 or 2.}
 }
 \description{
 Creates an HTMLWidget to play the simulation.

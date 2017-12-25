@@ -5,6 +5,7 @@
 #' @param target_path Destination path for captured images.
 #' @param width Width of captured image.
 #' @param height Height of captured image.
+#' @param circuit The circuit index, valid values: 1 or 2.
 #' 
 #' #' @examples 
 #' 
@@ -16,7 +17,7 @@
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_capture <- function(target_path = "capture", width = 32, height = 32) {
+hexkart_capture <- function(target_path = "capture", width = 32, height = 32, circuit = 1) {
   if (!dir.exists(target_path))
     dir.create(target_path, recursive = TRUE)
   
@@ -32,5 +33,5 @@ hexkart_capture <- function(target_path = "capture", width = 32, height = 32) {
     
     counter <<- counter + 1
     NULL
-  }, width = width, height = height)
+  }, width = width, height = height, circuit = circuit)
 }

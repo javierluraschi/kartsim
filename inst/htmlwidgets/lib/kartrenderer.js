@@ -8,7 +8,7 @@ function KartRenderer(el, width, height) {
     return isInit;
   };
   
-  this.init = function(captureWidth, captureHeight) {
+  this.init = function(captureWidth, captureHeight, circuitIdx) {
     if (isInit) return;
     isInit = true;
     
@@ -32,27 +32,31 @@ function KartRenderer(el, width, height) {
     var light = new THREE.AmbientLight(0xFFFFFF);
     scene.add(light);
     
+    var circuits = new Circuits();
+    var start = circuits.getStart(circuitIdx);
+    
     var kart = new THREE.Object3D();
-    kart.position.y = 6;
-    kart.position.x = -50;
-    kart.position.z = 10;
+    kart.position.x = start[0];
+    kart.position.y = start[1];
+    kart.position.z = start[2];
     kart.rotation.y = -Math.PI / 2;
     scene.add(kart);
     
     camera = new THREE.PerspectiveCamera(70, width / height, 1, 10000);
+    camera.rotation.y += start[3] * Math.PI / 2;
     kart.add(camera);
     
-    var circuits = new Circuits();
-    
-    var audio = new Audio(circuits.getAudio()); 
-    audio.addEventListener('ended', function() {
-      this.currentTime = 0;
-      this.play();
-    }, false);
-    audio.play();
+    var audio = new Audio(circuits.getAudio(circuitIdx)); 
+    if (audio) {
+      audio.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+      }, false);
+      audio.play();
+    }
     
     var image = new Image();
-    image.src = circuits.getCircuit();
+    image.src = circuits.getCircuit(circuitIdx);
     
     var texture = new THREE.Texture();
     texture.image = image;
@@ -96,7 +100,7 @@ function KartRenderer(el, width, height) {
       direction = "forward";
     };
     
-    if (typeof("Shiny") !== "undefined") {
+    if (typeof(Shiny) !== "undefined") {
       Shiny.addCustomMessageHandler("hexkart_control", function(data) {
           direction = data.direction;
         }
@@ -109,7 +113,7 @@ function KartRenderer(el, width, height) {
       mainRenderer.render(scene, camera);
       captureRender.render(scene, camera);
       
-      if (typeof("Shiny") !== "undefined") {
+      if (typeof(Shiny) !== "undefined") {
         var data = captureRender.domElement.toDataURL("image/png");
         Shiny.onInputChange("hexkart_capture", {
           data: data,

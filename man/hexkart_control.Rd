@@ -4,14 +4,16 @@
 \alias{hexkart_control}
 \title{Controls Simulation}
 \usage{
-hexkart_control(direction, width = 80, height = 40)
+hexkart_control(direction, width = 32, height = 32, circuit = 1)
 }
 \arguments{
-\item{direction}{A function \code{function(image, direction) {}} that provides
-control for this kart as a string with valid values: \code{"left"}, 
-\code{"forward"} or \code{"right"}.}
+\item{direction}{A function \code{function(image, direction) {}} that returns
+a direction as string with valid values: \code{"left"},  \code{"forward"} or 
+\code{"right"} and which can make use of a raw png \code{image}.}
 
 \item{width}{Width of captured image.}
+
+\item{height}{Height of captured image.}
 }
 \description{
 Creates an ShinyGadget to control kart in simulation.

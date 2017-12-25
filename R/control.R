@@ -7,6 +7,7 @@
 #'  \code{"right"} and which can make use of a raw png \code{image}.
 #' @param width Width of captured image.
 #' @param height Height of captured image.
+#' @param circuit The circuit index, valid values: 1 or 2.
 #' 
 #' #' @examples 
 #' 
@@ -18,7 +19,7 @@
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_control <- function(direction, width = 32, height = 32) {
+hexkart_control <- function(direction, width = 32, height = 32, circuit = 1) {
   if (!is.function(direction))
     stop(
       "The 'direction' parameter must be a 'function(image, direction) {}'",
@@ -38,7 +39,7 @@ hexkart_control <- function(direction, width = 32, height = 32) {
   
   server <- function(input, output, session) {
     output$hexkart <- hexkart_shiny_render(
-      hexkart_play(width, height)
+      hexkart_play(width, height, circuit)
     )
     
     output$label <- renderText({ 

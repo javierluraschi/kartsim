@@ -54,7 +54,7 @@ tfruns::training_run("models/tf-cifar.R")
 or in `cloudml` runnning:
 
 ```{r eval=FALSE}
-cloudml::cloudml_train("models/tf-cifar")
+cloudml::cloudml_train("models/tf-cifar.R")
 ```
 
 use `tfdeploy` to validate that predictions over the trained model work by running:
@@ -108,3 +108,46 @@ hexkart::hexkart_control(function(image, direction) {
 As we can see bellow, using the CIFAR CNN example is not up to the task, yet:
 
 ![](tools/README/kart-trained.gif)
+
+```{r eval=FALSE}
+tfruns::training_run("models/tf-cifar-prev.R")
+```
+
+```{r}
+sess <- tensorflow::tf$Session()
+graph <- tfdeploy::load_savedmodel(sess)
+
+tfdeploy::predict_savedmodel(
+  list(
+    list(
+      `input:0` = array(0, c(32,32,3)),
+      `previous:0` = array(c(0,0,0), c(3))
+    )
+  ),
+  graph,
+  type = "graph",
+  sess = sess)
+
+previous <- c(0,0,0)
+hexkart::hexkart_control(function(image, direction) {
+  labels <- c("left", "forward", "right")
+  input <- array(png::readPNG(image), c(32,32,3))
+  
+  result <- tfdeploy::predict_savedmodel(
+    list(
+      list(
+        `input:0` = input,
+        `previous:0` = array(previous, c(3))
+      )
+    ),
+    graph, type = "graph", sess = sess)
+  
+  scores <- result$predictions$activation[[1]]
+  direction <- which(scores == max(scores))
+  
+  previous <<- array(c(0,0,0), c(3))
+  previous[direction] <- 1
+
+  labels[direction]
+})
+```

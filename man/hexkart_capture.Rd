@@ -4,14 +4,17 @@
 \alias{hexkart_capture}
 \title{Captures Training}
 \usage{
-hexkart_capture(target_path = "capture", width = 80, height = 40)
+hexkart_capture(target_path = "capture", width = 32, height = 32,
+  circuit = 1)
 }
 \arguments{
 \item{target_path}{Destination path for captured images.}
 
 \item{width}{Width of captured image.}
 
-\item{height}{Height of captured image.
+\item{height}{Height of captured image.}
+
+\item{circuit}{The circuit index, valid values: 1 or 2.
 
 #' @examples 
 
