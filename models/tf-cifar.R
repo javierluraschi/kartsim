@@ -53,27 +53,38 @@ model %>% compile(
 library(png)
 classes <- c("left", "forward", "right")
 
-batch_size <- 10000
+batch_size <- 32
 
-labels_path <- tempfile()
-dir.create(labels_path)
-for (path in dir("capture", full.names = T)) {
-  for (d in c("left", "forward", "right")) {
-    if (grepl(d, path)) {
-      if (!file.exists(file.path(labels_path, d))) dir.create(file.path(labels_path, d))
-      file.copy(path, file.path(labels_path, d, basename(path)))
+prepare_flow_images <- function(source_path) {
+  output_path <- tempfile()
+  dir.create(output_path)
+  for (path in dir(source_path, full.names = T)) {
+    for (d in c("left", "forward", "right")) {
+      if (grepl(d, path)) {
+        if (!file.exists(file.path(output_path, d))) dir.create(file.path(output_path, d))
+        file.copy(path, file.path(output_path, d, basename(path)))
+      }
     }
   }
+  output_path
 }
+
+train_path <- prepare_flow_images("capture/train")
+test_path <- prepare_flow_images("capture/test")
 
 model %>% fit_generator(
   flow_images_from_directory(
-    labels_path,
+    train_path,
     classes = classes,
     batch_size = batch_size,
     target_size = c(32, 32)),
-  steps_per_epoch = as.integer(50000 / batch_size), 
-  epochs = 200
+  steps_per_epoch = as.integer(length(dir("capture/train")) / batch_size), 
+  epochs = 5,
+  validation_data = flow_images_from_directory(
+    test_path,
+    classes = classes,
+    batch_size = batch_size,
+    target_size = c(32, 32))
 )
 
 model %>% export_savedmodel("savedmodel")
