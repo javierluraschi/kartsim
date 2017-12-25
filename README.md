@@ -80,9 +80,11 @@ Which we can use to control the kart based on this model:
 
 ``` r
 hexkart::hexkart_control(function(image, direction) {
-  input <- array(png::readPNG(raw), c(32,32,3))
+  labels <- c("left", "forward", "right")
+  input <- array(png::readPNG(image), c(32,32,3))
   result <- tfdeploy::predict_savedmodel(input, graph, type = "graph", sess = sess)
-  scores <- result$predictions$output[[1]]
+  scores <- result$predictions$activation[[1]]
+
   labels[which(scores == max(scores))]
 })
 ```
