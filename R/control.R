@@ -11,15 +11,15 @@
 #' 
 #' #' @examples 
 #' 
-#' library(hexkart)
+#' library(kartsim)
 #' if (interactive()) {
-#'   hexkart_control(function(image) { "right" )
+#'   kartsim_control(function(image) "right")
 #' }
 #' 
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_control <- function(direction, width = 32, height = 32, circuit = 1) {
+kartsim_control <- function(direction, width = 32, height = 32, circuit = 1) {
   if (!is.function(direction))
     stop(
       "The 'direction' parameter must be a 'function(image, direction) {}'",
@@ -27,9 +27,9 @@ hexkart_control <- function(direction, width = 32, height = 32, circuit = 1) {
     )
   
   ui <- miniPage(
-    gadgetTitleBar("HexKart"),
+    gadgetTitleBar("KartSim"),
     miniContentPanel(
-      hexkart_shiny_output("hexkart"),
+      kartsim_shiny_output("kartsim"),
       span(
         textOutput("label"),
         style = "position: absolute; top: 5px; left: 10px; z-index: 100"
@@ -38,23 +38,23 @@ hexkart_control <- function(direction, width = 32, height = 32, circuit = 1) {
   )
   
   server <- function(input, output, session) {
-    output$hexkart <- hexkart_shiny_render(
-      hexkart_play(width, height, circuit)
+    output$kartsim <- kartsim_shiny_render(
+      kartsim_play(width, height, circuit)
     )
     
     output$label <- renderText({ 
-      input$hexkart_capture$direction
+      input$kartsim_capture$direction
     })
     
-    observeEvent(input$hexkart_capture, {
-      data <- sub("data:image/png;base64,", "", input$hexkart_capture$data)
+    observeEvent(input$kartsim_capture, {
+      data <- sub("data:image/png;base64,", "", input$kartsim_capture$data)
       base64 <- sub("data:image/png;base64,", "", data)
       raw <- base64enc::base64decode(base64)
       
       if (!is.null(direction)) {
-        direction_change <- direction(raw, input$hexkart_capture$direction)
+        direction_change <- direction(raw, input$kartsim_capture$direction)
         if (!is.null(direction_change)) {
-          session$sendCustomMessage(type = "hexkart_control", list(
+          session$sendCustomMessage(type = "kartsim_control", list(
             direction = direction_change
           ))
         }

@@ -1,5 +1,5 @@
 HTMLWidgets.widget({
-  name: 'hexkart',
+  name: 'kartsim',
   type: 'output',
   factory: function(el, width, height) {
     var kartRenderer = new KartRenderer(el, width, height);

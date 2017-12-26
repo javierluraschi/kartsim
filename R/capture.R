@@ -9,20 +9,20 @@
 #' 
 #' #' @examples 
 #' 
-#' library(hexkart)
+#' library(kartsim)
 #' if (interactive()) {
-#'   hexkart_capture()
+#'   kartsim_capture()
 #' }
 #' 
 #' @import shiny
 #' @import miniUI
 #' @export
-hexkart_capture <- function(target_path = "capture", width = 32, height = 32, circuit = 1) {
+kartsim_capture <- function(target_path = "capture", width = 32, height = 32, circuit = 1) {
   if (!dir.exists(target_path))
     dir.create(target_path, recursive = TRUE)
   
   counter <- 1
-  hexkart_control(direction = function(image, direction) {
+  kartsim_control(direction = function(image, direction) {
     writeBin(
       image,
       file.path(

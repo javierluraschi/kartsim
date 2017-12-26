@@ -12,19 +12,19 @@
 #' ui <- fluidPage(
 #'   tags$head(
 #'     tags$style(HTML("
-#'       #hexkart {
+#'       #kartsim {
 #'         height: 270px !important;
 #'         margin-top: 10px;
 #'       }
 #'     "))
 #'   ),
-#'   shiny_pixels_output("hexkart")
-#'   textOutput("direction"),
+#'   kartsim_shiny_output("kartsim"),
+#'   textOutput("direction")
 #' )
 #' 
 #' server <- function(input, output) {
-#' hexkart_shiny_render(
-#'   hexkart_play(size)
+#' kartsim_shiny_render(
+#'   kartsim_play(size)
 #' )
 #' 
 #' observeEvent(input$done, {
@@ -37,8 +37,8 @@
 #' }
 #' 
 #' @export
-hexkart_shiny_output <- function(outputId, width = "100%", height = "100%") {
-  shinyWidgetOutput(outputId, "hexkart", width, height, package = "hexkart")
+kartsim_shiny_output <- function(outputId, width = "100%", height = "100%") {
+  shinyWidgetOutput(outputId, "kartsim", width, height, package = "kartsim")
 }
 
 #' Shiny Widget Render
@@ -49,11 +49,11 @@ hexkart_shiny_output <- function(outputId, width = "100%", height = "100%") {
 #' @param env The \code{env} for \code{shinyRenderWidget}.
 #' @param quoted The \code{quoted} for \code{shinyRenderWidget}.
 #' 
-#' @seealso [shiny_pixels_output()] for an example of using this function
+#' @seealso [kartsim_shiny_output()] for an example of using this function
 #' within a 'Shiny' application.
 #'   
 #' @export
-hexkart_shiny_render <- function(expr, env = parent.frame(), quoted = FALSE) {
+kartsim_shiny_render <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, hexkart_shiny_output, env, quoted = TRUE)
+  shinyRenderWidget(expr, kartsim_shiny_output, env, quoted = TRUE)
 }

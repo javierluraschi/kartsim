@@ -8,17 +8,12 @@
 #' 
 #' @examples 
 #' 
-#' library(hexkart)
-#' show_pixels(
-#'   round(runif(400, 0, 1)),
-#'   grid = c(40, 10),
-#'   size = c(800, 200),
-#'   params = list(fill = list(color = "#FF3388"))
-#' )
+#' library(kartsim)
+#' kartsim_play()
 #' 
 #' @import htmlwidgets
 #' @export
-hexkart_play <- function(width = NULL, height = NULL, circuit = 1) {
+kartsim_play <- function(width = NULL, height = NULL, circuit = 1) {
   
   # forward options using x
   x = list(
@@ -29,7 +24,7 @@ hexkart_play <- function(width = NULL, height = NULL, circuit = 1) {
   
   # create widget
   htmlwidgets::createWidget(
-    name = 'hexkart',
+    name = 'kartsim',
     x
   )
 }
