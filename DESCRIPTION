@@ -12,7 +12,7 @@ Authors@R: c(
     comment = "Circuit Audio")
     )
 Maintainer: Javier Luraschi <javier@rstudio.com>
-Description: Provides tools to render and capture kart training data using
+Description: Provides a kart simulation to render and capture kart training data using
   'HTML'  widgets  or 'Shiny' applications. It can be used to: Collect kart
   playing styles, create test cases for image classification and render trained
   models over an interactive kart simulation.
