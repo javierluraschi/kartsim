@@ -1,16 +1,26 @@
 function KartRenderer(el, width, height) {
   var isInit = false;
   
-  var mainRenderer;
-  var camera;
+  var mainRenderer, captureRender;
+  var mainCamera, captureCamera;
+  var kart;
+  var discrete = true;
+  var angle = 0;
   
   this.isInit = function() {
     return isInit;
   };
   
-  this.init = function(captureWidth, captureHeight, circuitIdx) {
+  var translateKart = function(kart, angle) {
+    kart.translateZ(-1.5);
+      
+    kart.rotation.y -= angle / 100 * Math.PI / 2;
+  };
+  
+  this.init = function(captureWidth, captureHeight, circuitIdx, newDiscrete) {
     if (isInit) return;
     isInit = true;
+    discrete = newDiscrete;
     
     mainRenderer = new THREE.WebGLRenderer({
     });
@@ -19,7 +29,7 @@ function KartRenderer(el, width, height) {
     mainRenderer.setSize(width, height);
     el.appendChild(mainRenderer.domElement);
     
-    var captureRender = new THREE.WebGLRenderer({
+    captureRender = new THREE.WebGLRenderer({
       preserveDrawingBuffer: true
     });
     
@@ -35,16 +45,20 @@ function KartRenderer(el, width, height) {
     var circuits = new Circuits();
     var start = circuits.getStart(circuitIdx);
     
-    var kart = new THREE.Object3D();
+    kart = new THREE.Object3D();
     kart.position.x = start[0];
     kart.position.y = start[1];
     kart.position.z = start[2];
-    kart.rotation.y = -Math.PI / 2;
+    kart.rotation.y = start[3] * Math.PI / 2;
     scene.add(kart);
     
-    camera = new THREE.PerspectiveCamera(70, width / height, 1, 10000);
-    camera.rotation.y += start[3] * Math.PI / 2;
-    kart.add(camera);
+    mainCamera = new THREE.PerspectiveCamera(90, width / height, 1, 10000);
+    mainCamera.rotation.x = -0.5 * Math.PI / 2;
+    kart.add(mainCamera);
+    
+    captureCamera = new THREE.PerspectiveCamera(90, captureWidth / captureHeight, 1, 10000);
+    captureCamera.rotation.x = -0.5 * Math.PI / 2;
+    kart.add(captureCamera);
     
     var audio = new Audio(circuits.getAudio(circuitIdx)); 
     if (audio) {
@@ -76,33 +90,31 @@ function KartRenderer(el, width, height) {
     floor.position.z = 0;
     scene.add(floor);
     
-    var direction = "forward";
     setInterval(function() {
-      camera.translateZ(-2);
-      if (direction == "left") camera.rotation.y -= -0.05 * Math.PI / 2;
-      if (direction == "right") camera.rotation.y -= 0.05 * Math.PI / 2;
+      translateKart(kart, angle);
     }, 100);
     
     document.onkeydown = function (e) {
       switch(e.keyCode) {
-        case 37:
-          direction = "left";
+        case 37: // left
+          delta = discrete ? -1.5 : -0.5;
           break;
-          case 39:
-            direction = "right";
-            break;
-            default:
-              direction = "forward";
+        case 39: // right
+          delta = discrete ? 1.5 : 0.5;
+          break;
       }
+      
+      angle = false ? delta : angle + delta;
+      angle = Math.max(Math.min(9, angle), -9);
     };
     
     document.onkeyup = function (e) {
-      direction = "forward";
+      if (discrete) angle = 0;
     };
     
     if (typeof(Shiny) !== "undefined") {
       Shiny.addCustomMessageHandler("kartsim_control", function(data) {
-          direction = data.direction;
+          angle = data.angle;
         }
       );
     }
@@ -110,14 +122,14 @@ function KartRenderer(el, width, height) {
     var animate = function() {
       requestAnimationFrame(animate);
       
-      mainRenderer.render(scene, camera);
-      captureRender.render(scene, camera);
+      mainRenderer.render(scene, mainCamera);
+      captureRender.render(scene, captureCamera);
       
       if (typeof(Shiny) !== "undefined") {
         var data = captureRender.domElement.toDataURL("image/png");
         Shiny.onInputChange("kartsim_capture", {
           data: data,
-          direction: direction
+          angle: angle
         });
       }
     };
@@ -128,8 +140,11 @@ function KartRenderer(el, width, height) {
   this.resize = function(width, height) {
     if(!isInit) return;
     
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    mainCamera.aspect = width / height;
+    
+    mainCamera.updateProjectionMatrix();
+    captureCamera.updateProjectionMatrix();
+    
     mainRenderer.setSize(width, height);
   };
 }

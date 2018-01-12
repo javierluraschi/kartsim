@@ -9,7 +9,8 @@ HTMLWidgets.widget({
         if (!kartRenderer.isInit()) kartRenderer.init(
           parseInt(x.width),
           parseInt(x.height),
-          parseInt(x.circuit)
+          parseInt(x.circuit),
+          x.discrete
         );
       },
       resize: function(width, height) {

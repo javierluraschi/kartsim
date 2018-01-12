@@ -19,7 +19,7 @@
 #'     "))
 #'   ),
 #'   kartsim_shiny_output("kartsim"),
-#'   textOutput("direction")
+#'   textOutput("angle")
 #' )
 #' 
 #' server <- function(input, output) {
@@ -28,7 +28,7 @@
 #' )
 #' 
 #' observeEvent(input$done, {
-#'   input$direction <- input$direction
+#'   input$angle <- input$angle
 #' })
 #' }
 #' 
