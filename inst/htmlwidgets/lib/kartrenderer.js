@@ -97,14 +97,14 @@ function KartRenderer(el, width, height) {
     document.onkeydown = function (e) {
       switch(e.keyCode) {
         case 37: // left
-          delta = discrete ? -1.5 : -0.5;
+          delta = discrete ? -5 : -0.5;
           break;
         case 39: // right
-          delta = discrete ? 1.5 : 0.5;
+          delta = discrete ? 5 : 0.5;
           break;
       }
       
-      angle = false ? delta : angle + delta;
+      angle = discrete ? delta : angle + delta;
       angle = Math.max(Math.min(9, angle), -9);
     };
     
