@@ -6,7 +6,7 @@
 #'  a direction angle as numeric and which can make use of a raw png \code{image}.
 #' @param width Width of captured image.
 #' @param height Height of captured image.
-#' @param circuit The circuit index, valid values: 1 or 2.
+#' @param circuit The circuit index, valid values: 1, 2 or 3.
 #' @param discrete Discrete control of direction? Discrete control expects
 #'   the \code{direction} function to return a character string: left, right or
 #'   forward. Otherwise, it will expect a numeric value with the steering angle.

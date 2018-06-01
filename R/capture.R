@@ -9,7 +9,7 @@
 #' @param target_path Destination path for captured images.
 #' @param width Width of captured image.
 #' @param height Height of captured image.
-#' @param circuit The circuit index, valid values: 1 or 2.
+#' @param circuit The circuit index, valid values: 1, 2 or 3.
 #' @param discrete Discrete capture of direction? Discrete capture produces images
 #'   labeled: left, right or forward. Otherwise, it will produce continuous
 #'   labels with a steering angle appended.

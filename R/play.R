@@ -4,7 +4,7 @@
 #' 
 #' @param width While capturing, width of capture image.
 #' @param height While capturing, height of capture image.
-#' @param circuit The circuit index, valid values: 1 or 2.
+#' @param circuit The circuit index, valid values: 1, 2 or 3.
 #' @param discrete Kart steering is discrete?
 #' 
 #' @examples 
